@@ -2,26 +2,42 @@
   "name": "codeforreal-lms",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "analyze": "ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/button": "^2.0.21",
+    "@nextui-org/divider": "^2.0.20",
+    "@nextui-org/image": "^2.0.21",
+    "@nextui-org/link": "^2.0.22",
+    "@nextui-org/navbar": "^2.0.22",
+    "@nextui-org/system": "^2.0.10",
+    "@nextui-org/theme": "^2.1.9",
+    "clsx": "^2.0.0",
+    "framer-motion": "^10.16.4",
+    "next": "latest",
+    "next-themes": "^0.2.1",
     "react": "latest",
     "react-dom": "latest",
-    "next": "latest"
+    "sharp": "^0.32.6",
+    "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/react": "latest",
+    "@next/bundle-analyzer": "^13.5.3",
+    "@svgr/webpack": "^8.1.0",
     "@types/node": "latest",
+    "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest"
+    "typescript": "latest"
   }
 }

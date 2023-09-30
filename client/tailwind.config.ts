@@ -13,7 +13,11 @@ const WIDTHS = Object.freeze({
 
 const config: Config = {
   darkMode: 'class',
-  plugins: [nextui({ defaultTheme: 'dark', addCommonColors: true })],
+  plugins: [
+    nextui({
+      addCommonColors: true,
+    }),
+  ],
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     // NextUI Components
@@ -31,6 +35,7 @@ const config: Config = {
         secondary: '#ff6ae7',
         black1: '#000000',
         gray1: '#c2c2c2',
+        white1: '#ffffff',
       },
       fontFamily: {
         Archive: ['var(--font-Archive)'],

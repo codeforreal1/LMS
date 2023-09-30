@@ -19,7 +19,7 @@ function Hero() {
         <div className="z-[2] relative">
           <h1 className="uppercase hidden drop-shadow-xl">Code For Real</h1>
           <HeroBrand className="md:w-[300px] xl:w-[400px] w-[280px] m-auto md:m-0" />
-          <h2 className="my-5 text-xl md:text-2xl text-gray1 font-medium drop-shadow-xl text-center md:text-left">
+          <h2 className="my-5 text-xl md:text-2xl text-primary dark:text-gray1 font-medium drop-shadow-xl text-center md:text-left">
             Coding Unleashed.
             <span className="block">Empowering Your Digital Odyssey.</span>
           </h2>

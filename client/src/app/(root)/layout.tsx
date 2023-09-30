@@ -1,14 +1,11 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
+import { mergeClasses } from '@/utils/tailwind'
 import UIProvider from '../../providers/UIProvider'
 import ThemeProvider from '../../providers/ThemeProvider'
 import { combinedFontVariables, Poppins } from '../../assets/fonts'
-
-export const metadata: Metadata = {
-  title: 'Code For Real',
-  description: 'Learning Management System created by Code For Real.',
-}
+import Head from './Head'
 
 export default function RootLayout({
   children,
@@ -17,11 +14,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${Poppins.className} ${combinedFontVariables}`}>
-        <UIProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </UIProvider>
+      <Head />
+      <body
+        className={mergeClasses([
+          `${Poppins.className} ${combinedFontVariables}`,
+        ])}
+      >
+        <ThemeProvider>
+          <UIProvider>{children}</UIProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
+}
+
+export function generateMetadata(): Metadata {
+  return {
+    title: 'Code For',
+    description: 'Learning Management System created by Code For Real.',
+  }
 }

@@ -2,14 +2,14 @@ import React from 'react'
 
 import registry from './registry'
 
-interface IconProps {
+export interface IconProps {
   name: keyof typeof registry
   size?: number
   className?: string
 }
 
 function Icon(props: IconProps) {
-  const { name, size = 25, className } = props
+  const { name, size = 20, className } = props
 
   const SVGComponent = registry[name]
 

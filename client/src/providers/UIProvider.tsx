@@ -6,7 +6,7 @@ import { NextUIProvider } from '@nextui-org/system'
 function Provider({ children }: { children: React.ReactNode }) {
   return (
     <NextUIProvider>
-      <main className="dark text-foreground">{children}</main>
+      <main>{children}</main>
     </NextUIProvider>
   )
 }

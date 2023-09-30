@@ -11,3 +11,7 @@ body {
   height: 100%;
   min-height: 100vh;
 }
+
+[class='light'] body {
+  background-color: theme('colors.white1');
+}

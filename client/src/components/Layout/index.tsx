@@ -11,6 +11,7 @@ interface LayoutProps {
   children: React.ReactNode
   containerClassName?: ClassValue
   className?: ClassValue
+  // handleDarkModeByDefault?: boolean
 }
 
 export const LayoutContext = React.createContext<{

@@ -6,12 +6,12 @@ import {
 
 import { mergeClasses } from '@/utils/tailwind'
 
-interface ButtonProps {
+export interface ButtonProps extends NextButtonProps {
   color?: NextButtonProps['color']
   variant?: NextButtonProps['variant']
 }
 
-function Button(props: ButtonProps & NextButtonProps) {
+function Button(props: ButtonProps) {
   const { color, variant, ...nextButtonProps } = props
 
   return (
@@ -19,7 +19,7 @@ function Button(props: ButtonProps & NextButtonProps) {
       {...nextButtonProps}
       color={color ?? 'default'}
       variant={variant ?? 'flat'}
-      className={mergeClasses([nextButtonProps.className])}
+      className={mergeClasses(['font-medium', nextButtonProps.className])}
     />
   )
 }

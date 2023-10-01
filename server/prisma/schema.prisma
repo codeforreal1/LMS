@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+enum Status {
+  ACTIVE
+  DELETED
+}
+
+model User {
+  id           BigInt     @id @default(autoincrement())
+  uuid         String     @db.VarChar(36)
+  firstName    String?    @db.VarChar(255)
+  lastName     String?    @db.VarChar(255)
+  registeredAt DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+  status       Status     @default(ACTIVE)
+  deletedAt    DateTime?
+  credential   Credential @relation(fields: [credentialId], references: [id])
+  credentialId BigInt     @unique
+}
+
+model Credential {
+  id        BigInt    @id @default(autoincrement())
+  uuid      String    @db.VarChar(36)
+  email     String?   @db.VarChar(255)
+  password  String?   @db.VarChar(255)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  status    Status    @default(ACTIVE)
+  deletedAt DateTime?
+  User      User?
+}

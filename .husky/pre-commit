@@ -3,7 +3,7 @@
 
 
 echo $(pwd) 
+echo -e "\e[1;32m Husky Verify \e[0m"
 npx lint-staged;
-
 
 

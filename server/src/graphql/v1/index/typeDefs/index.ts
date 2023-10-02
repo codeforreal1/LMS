@@ -4,7 +4,14 @@ export default gql`
   type Query
   type Mutation
 
-  type MutationResponse {
+  interface Response {
+    success: Boolean!
+    message: String
+    errors: [ErrorResponse!]
+    code: String
+  }
+
+  type MutationResponse implements Response {
     success: Boolean!
     message: String
     errors: [ErrorResponse!]

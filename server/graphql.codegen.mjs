@@ -7,15 +7,17 @@ const config = {
       schema: './src/graphql/v1/**/typeDefs/index.ts',
       preset: 'graphql-modules',
       presetConfig: {
+        baseTypesPath: 'types.ts',
+        filename: 'types/index.ts',
         useGraphQLModules: false,
-        baseTypesPath: 'types/graphql.d.ts',
-        filename: 'types/graphql.d.ts',
+        noNamespaces: true,
+        encapsulateModuleTypes: 'none',
       },
       plugins: [
         {
           add: {
             content:
-              '/* eslint-disable */\n/* THIS IS AN AUTO GENERATED FILE - DO NOT MODIFY */\n',
+              '/* eslint-disable */\n// @ts-nocheck\n/* THIS IS AN AUTO GENERATED FILE - DO NOT MODIFY */\n',
           },
         },
         'typescript',

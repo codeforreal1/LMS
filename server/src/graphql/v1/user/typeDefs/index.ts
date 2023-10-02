@@ -7,7 +7,7 @@ export default gql`
 
   type User {
     id: Int!
-    uuid: Int!
+    uuid: String!
     firstName: String
     lastName: String
     credential: Credential

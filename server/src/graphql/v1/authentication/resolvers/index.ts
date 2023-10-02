@@ -1,12 +1,9 @@
-const authentication = {
-  Mutation: {
-    register() {
-      return {
-        success: false,
-        message: 'Hello World',
-      };
-    },
-  },
+import type { Resolvers } from '../types';
+
+import mutations from './mutations';
+
+const authentication: Resolvers = {
+  Mutation: mutations,
 };
 
 export default authentication;

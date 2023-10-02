@@ -29,7 +29,15 @@
     "eqeqeq": ["error", "always", { "null": "ignore" }],
     "no-empty": "off",
     "import/no-unresolved": [2, { "commonjs": true, "amd": true }],
-    "@typescript-eslint/no-var-requires": 0
+    "@typescript-eslint/no-var-requires": 0,
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // or "error"
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
   },
   "settings": {
     "import/resolver": {

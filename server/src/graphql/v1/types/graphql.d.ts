@@ -1,4 +1,7 @@
-import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
+/* eslint-disable */
+/* THIS IS AN AUTO GENERATED FILE - DO NOT MODIFY */
+
+import { GraphQLResolveInfo } from 'graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -14,7 +17,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Date: { input: any; output: any; }
 };
 
 export type Credential = {
@@ -136,7 +138,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Credential: ResolverTypeWrapper<Credential>;
-  Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   ErrorResponse: ResolverTypeWrapper<ErrorResponse>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -150,7 +151,6 @@ export type ResolversTypes = {
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Credential: Credential;
-  Date: Scalars['Date']['output'];
   ErrorResponse: ErrorResponse;
   Int: Scalars['Int']['output'];
   Mutation: {};
@@ -166,10 +166,6 @@ export type CredentialResolvers<ContextType = any, ParentType extends ResolversP
   uuid?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
-
-export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
-  name: 'Date';
-}
 
 export type ErrorResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ErrorResponse'] = ResolversParentTypes['ErrorResponse']> = {
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -204,7 +200,6 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   Credential?: CredentialResolvers<ContextType>;
-  Date?: GraphQLScalarType;
   ErrorResponse?: ErrorResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   MutationResponse?: MutationResponseResolvers<ContextType>;

@@ -1,14 +1,8 @@
 import { gql } from 'graphql-tag';
 
-import authentication from './authentication';
-import user from './user';
-import credential from './credential';
-
-const global = gql`
+export default gql`
   type Query
   type Mutation
-
-  scalar Date
 
   type MutationResponse {
     success: Boolean!
@@ -22,5 +16,3 @@ const global = gql`
     message: String
   }
 `;
-
-export default [global, authentication, user, credential];

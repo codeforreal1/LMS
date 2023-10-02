@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "predev": "yarn codegen",
-    "dev": "tsx watch ./src/server.ts",
+    "dev": "node-dev --notify=false --clear ./src/server.ts",
     "prebuild": "yarn codegen",
     "build": "./bin/build.sh",
     "codegen": "graphql-codegen --config graphql.codegen.mjs"
@@ -20,12 +20,14 @@
     "graphql-tag": "^2.12.6",
     "morgan": "^1.10.0",
     "prisma": "^5.3.1",
+    "remove": "^0.1.5",
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@graphql-codegen/add": "^5.0.0",
     "@graphql-codegen/cli": "^5.0.0",
+    "@graphql-codegen/graphql-modules-preset": "^4.0.1",
     "@graphql-codegen/typescript": "^4.0.1",
-    "@graphql-codegen/typescript-operations": "^4.0.1",
     "@graphql-codegen/typescript-resolvers": "^4.0.1",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
@@ -36,10 +38,10 @@
     "eslint": "^8.50.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.28.1",
+    "node-dev": "^8.0.0",
     "prettier": "^3.0.3",
     "prisma-import": "^1.0.4",
     "ts-node": "^10.9.1",
-    "tsx": "^3.13.0",
     "typescript": "^5.2.2"
   }
 }

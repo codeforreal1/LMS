@@ -5,8 +5,7 @@ import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';
 
-import typeDefsV1 from './graphql/v1/typeDefs';
-import resolversV1 from './graphql/v1/resolvers';
+import graphqlV1 from './graphql/v1';
 import GraphqlLib from './libs/Graphql';
 
 const app = express();
@@ -16,8 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 const apolloServerV1 = new ApolloServer({
-  typeDefs: typeDefsV1,
-  resolvers: resolversV1,
+  typeDefs: graphqlV1.typeDefs,
+  resolvers: graphqlV1.resolvers,
 });
 
 const PORT = process.env.PORT;

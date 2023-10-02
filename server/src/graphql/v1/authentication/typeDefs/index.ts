@@ -1,7 +1,7 @@
 import { gql } from 'graphql-tag';
 
 export default gql`
-  type Mutation {
+  extend type Mutation {
     register(email: String!, password: String!): MutationResponse!
   }
 `;

@@ -4,8 +4,8 @@
 
 import * as Types from "../../types";
 interface DefinedFields {
-  Query: '_';
-  Mutation: '_2';
+  Query: '_query_';
+  Mutation: '_mutation_';
   MutationResponse: 'success' | 'message' | 'errors' | 'code';
   ErrorResponse: 'path' | 'message';
   Response: 'success' | 'message' | 'errors' | 'code';

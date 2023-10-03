@@ -35,7 +35,7 @@ export type ErrorResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  _2?: Maybe<Scalars['ID']['output']>;
+  _mutation_?: Maybe<Scalars['ID']['output']>;
   register: MutationResponse;
 };
 
@@ -55,7 +55,7 @@ export type MutationResponse = Response & {
 
 export type Query = {
   __typename?: 'Query';
-  _?: Maybe<Scalars['ID']['output']>;
+  _query_?: Maybe<Scalars['ID']['output']>;
   getUser?: Maybe<Scalars['String']['output']>;
 };
 
@@ -192,7 +192,7 @@ export type ErrorResponseResolvers<ContextType = any, ParentType extends Resolve
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  _2?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  _mutation_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   register?: Resolver<ResolversTypes['MutationResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
 };
 
@@ -205,7 +205,7 @@ export type MutationResponseResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  _?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  _query_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   getUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
 };
 

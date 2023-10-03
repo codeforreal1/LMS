@@ -1,8 +1,12 @@
 import { gql } from 'graphql-tag';
 
 export default gql`
-  type Query
-  type Mutation
+  type Query {
+    _: ID
+  }
+  type Mutation {
+    _2: ID
+  }
 
   interface Response {
     success: Boolean!

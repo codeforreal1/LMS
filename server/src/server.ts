@@ -1,6 +1,5 @@
-require('dotenv').config();
-
 import express from 'express';
+import 'dotenv/config';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import cors from 'cors';

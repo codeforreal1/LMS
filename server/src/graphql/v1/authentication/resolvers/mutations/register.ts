@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import type { MutationResolvers } from '../../types';
 import GraphqlLib from '../../../../../libs/Graphql';
-import Database, { client as dbClient } from '../../../../../libs/Database';
+import { db, orm, schema } from '../../../../../db/libs/Database';
 import PasswordLib from '../../../../../libs/Password';
 import errorCodes from '../../../../../static/error-codes';
 
@@ -22,8 +22,8 @@ const register: RegisterMutations = async function (_, inputs) {
   const { email, password } = response;
 
   try {
-    const existingUser = await dbClient.credential.findFirst({
-      where: { email: email.trim() },
+    const existingUser = await db.query.credential.findFirst({
+      where: (credential) => orm.eq(credential.email, email),
     });
 
     if (!(existingUser == null)) {
@@ -36,33 +36,24 @@ const register: RegisterMutations = async function (_, inputs) {
 
     const hashedPassword = await PasswordLib.hash(password);
 
-    const { user } = await dbClient.$transaction(async function (tx) {
-      const credential = await tx.credential.create({
-        data: {
-          uuid: Database.generateUUID(),
-          email,
-          password: hashedPassword,
-        },
+    await db.transaction(async (tx) => {
+      const credential = await tx.insert(schema.credential).values({
+        email,
+        password: hashedPassword,
       });
 
-      const user = await tx.user.create({
-        data: {
-          uuid: Database.generateUUID(),
-          credentialId: credential.id,
-          registeredAt: new Date(),
-        },
+      const user = await tx.insert(schema.user).values({
+        credentialId: credential[0].insertId,
+        // credentialId: 10,
+        registeredAt: new Date(),
       });
 
-      return { user, credential };
+      return { userId: user[0].insertId, credentialId: credential[0].insertId };
     });
 
     return {
       success: true,
       message: 'Account created successfully.',
-      data: {
-        id: Number(user.id),
-        uuid: user.uuid,
-      },
     };
   } catch (error) {
     console.log('---', error);

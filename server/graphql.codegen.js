@@ -1,5 +1,4 @@
 /** @type {import("@graphql-codegen/cli").CodegenConfig} */
-
 const config = {
   overwrite: true,
   generates: {
@@ -28,4 +27,4 @@ const config = {
   require: 'ts-node/register',
 };
 
-export default config;
+module.exports = config;

@@ -1,8 +1,13 @@
 import morgan from 'morgan';
 import type { ZodSchema } from 'zod';
 import { Request } from 'express';
+import util from 'util';
 
+import Logger from './Logger';
+import Environment from './Environment';
 import errorCodes from '../static/error-codes';
+
+const logger = new Logger(__filename);
 
 const AVAILABLE_VERSIONS = [
   {
@@ -16,6 +21,12 @@ function findPath(id: number): string {
   return AVAILABLE_VERSIONS.find((version) => version?.id === id)?.path ?? '';
 }
 
+interface DefaultOptions {
+  formatError: {
+    meta: Record<string, unknown>;
+  };
+}
+
 interface ErrorResponse {
   path: string;
   message: string;
@@ -27,6 +38,12 @@ interface GraphqlResponse {
   message?: string;
   errors?: ErrorResponse[];
 }
+
+const defaultOptions: DefaultOptions = {
+  formatError: {
+    meta: {},
+  },
+};
 
 class GraphqlLib {
   static availableVersions = AVAILABLE_VERSIONS;
@@ -57,7 +74,7 @@ class GraphqlLib {
   }
 
   graphqlLoggerMiddleware() {
-    if (process.env.DEBUG === 'true') {
+    if (Environment.isDebugMode) {
       morgan.token('graphql-query', (req: Request) => {
         const disallowedLogs = ['IntrospectionQuery'];
 
@@ -78,6 +95,28 @@ class GraphqlLib {
       });
       return morgan(':graphql-query');
     }
+  }
+
+  static formatError(error: unknown, options?: DefaultOptions['formatError']) {
+    options = { ...defaultOptions.formatError, ...options };
+
+    if (Environment.isDebugMode) {
+      util.inspect.defaultOptions.showHidden = true;
+      console.log('\x1b[31m%s\x1b[0m', '> Error', { error });
+    }
+
+    if (!Environment.isLoggingDisabled) {
+      const message = error instanceof Error ? error.message : '-';
+      logger.log.error(
+        new Error(JSON.stringify({ prompt: message, meta: options.meta })),
+      );
+    }
+
+    return {
+      success: false,
+      message: 'Something went wrong',
+      code: errorCodes.ERROR_UNKNOWN,
+    };
   }
 }
 

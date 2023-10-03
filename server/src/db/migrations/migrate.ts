@@ -9,11 +9,11 @@ import { db } from '../libs/Database';
     await migrate(db, {
       migrationsFolder: path.join(__dirname, '..', '..', '..', '.drizzle'),
     });
-    console.log('\x1b[32m%s\x1b[0m', 'Migration succeeded.');
+    console.log('\x1b[32m%s\x1b[0m', '> Migration succeeded.');
     process.exit(0);
   } catch (error) {
     util.inspect.defaultOptions.showHidden = true;
-    console.log('\x1b[31m%s\x1b[0m', 'Migration failed.', error);
+    console.log('\x1b[31m%s\x1b[0m', '> Migration failed.', error);
     process.exit(1);
   }
 })();

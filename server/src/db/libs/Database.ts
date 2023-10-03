@@ -4,6 +4,7 @@ import { drizzle } from 'drizzle-orm/mysql2';
 import mysql, { ConnectionOptions } from 'mysql2/promise';
 
 import * as schema from '../models';
+import Environment from '../../libs/Environment';
 
 export const config: ConnectionOptions = {
   host: process.env.DATABASE_HOST,
@@ -15,7 +16,7 @@ export const config: ConnectionOptions = {
 const connection = mysql.createPool(config);
 
 const db = drizzle(connection, {
-  logger: process.env.DEBUG === 'true',
+  logger: Environment.isDebugMode,
   schema,
   mode: 'planetscale',
 });

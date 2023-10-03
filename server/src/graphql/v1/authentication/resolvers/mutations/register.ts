@@ -44,7 +44,6 @@ const register: RegisterMutations = async function (_, inputs) {
 
       const user = await tx.insert(schema.user).values({
         credentialId: credential[0].insertId,
-        // credentialId: 10,
         registeredAt: new Date(),
       });
 
@@ -56,10 +55,7 @@ const register: RegisterMutations = async function (_, inputs) {
       message: 'Account created successfully.',
     };
   } catch (error) {
-    console.log('---', error);
-    return {
-      success: false,
-    };
+    return GraphqlLib.formatError(error);
   }
 };
 

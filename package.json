@@ -5,6 +5,7 @@
   "repository": "https://github.com/niraj-khatiwada/CodeForReal-LMS.git",
   "author": "niraj-khatiwada <nirazzz.nk@gmail.com>",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "lint-staged": "lint-staged",
     "postinstall": "npm install --prefix server",

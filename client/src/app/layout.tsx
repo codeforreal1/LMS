@@ -1,11 +1,12 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import './globals.css'
 
 import { mergeClasses } from '@/utils/tailwind'
-import UIProvider from '../../providers/UIProvider'
-import ThemeProvider from '../../providers/ThemeProvider'
-import { combinedFontVariables, Poppins } from '../../assets/fonts'
-import Head from './Head'
+import UIProvider from '../providers/UIProvider'
+import ThemeProvider from '../providers/ThemeProvider'
+import { combinedFontVariables, Poppins } from '../assets/fonts'
+import Head from './(root)/Head'
 
 export default function RootLayout({
   children,

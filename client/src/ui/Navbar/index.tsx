@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navbar as Nav, NavbarContent, NavbarItem } from '@nextui-org/navbar'
+import Link from 'next/link'
 
 import Button from '@/components/Button'
-import Link from '@/components/Link'
 import ThemeSwitcher from '@/components/ThemeSwitcher'
 import LogoGradientSVG from '@/assets/images/logo-gradient.svg'
 
@@ -31,7 +31,9 @@ function Navbar() {
             <ThemeSwitcher />
           </NavbarItem>
           <NavbarItem>
-            <Button>Login</Button>
+            <Button as={Link} href="/login">
+              Login
+            </Button>
           </NavbarItem>
         </NavbarContent>
       </Nav>

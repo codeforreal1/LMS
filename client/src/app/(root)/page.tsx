@@ -1,7 +1,8 @@
 import React from 'react'
+import Link from 'next/link'
 
 import Navbar from '@/ui/Navbar'
-import Hero from './(Home)/(Hero)/index'
+import Hero from './(Hero)/index'
 
 function RootPage() {
   return (
@@ -10,6 +11,7 @@ function RootPage() {
       <Hero />
     </div>
   )
+  // return <Link href="login">Login</Link>
 }
 
 export default RootPage

@@ -1,12 +1,10 @@
 import React from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
 
 import Layout from '@/components/Layout'
 import { mergeClasses } from '@/utils/tailwind'
 import HeroBrandSVG from '@/assets/images/hero-brand.svg'
-import HeroArt from '@/assets/images/hero-art.png'
 import styles from './styles.module.css'
+import HeroImage from './HeroImage'
 
 const HeroBrand = HeroBrandSVG as React.FC<React.SVGProps<SVGElement>>
 
@@ -22,30 +20,7 @@ function Hero() {
             <span className="block">Empowering Your Digital Odyssey.</span>
           </h2>
         </div>
-        <motion.div
-          className={mergeClasses([
-            styles.heroArtImageStyles,
-            'drop-shadow-2xl shrink-0',
-          ])}
-          animate={{ translateY: -50 }}
-          transition={{
-            repeat: Infinity,
-            repeatType: 'reverse',
-            type: 'keyframes',
-            duration: 8,
-            ease: 'anticipate',
-          }}
-        >
-          <Image
-            src={HeroArt}
-            alt="A panda coding in a laptop."
-            loading="eager"
-            priority
-            quality={100}
-            className="shrink-0 w-100 h-100"
-            placeholder="blur"
-          />
-        </motion.div>
+        <HeroImage />
       </section>
       <div className={styles.animatedBG}></div>
     </Layout>

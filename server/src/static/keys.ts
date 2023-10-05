@@ -1,0 +1,5 @@
+export default Object.freeze({
+  ACCESS_TOKEN: 'ACCESS_TOKEN',
+  REFRESH_TOKEN: 'REFRESH_TOKEN',
+  SESSION_KEY: 'SESSION_KEY',
+});

@@ -5,6 +5,7 @@ import mysql, { ConnectionOptions } from 'mysql2/promise';
 
 import * as schema from '../models';
 import Environment from '../../libs/Environment';
+import enums from '../utils/enums';
 
 export const config: ConnectionOptions = {
   host: process.env.DATABASE_HOST,
@@ -16,7 +17,13 @@ export const config: ConnectionOptions = {
 const connection = mysql.createPool(config);
 
 const db = drizzle(connection, {
-  logger: Environment.isDebugMode,
+  logger: Environment.isDebugMode
+    ? {
+        logQuery(query, params) {
+          console.log(query, Environment.isNotProduction ? params : '');
+        },
+      }
+    : false,
   schema,
   mode: 'planetscale',
 });
@@ -42,5 +49,5 @@ class Database implements DatabaseInterface {
 
 export const instance = Database.getInstance();
 
-export { db, orm, schema };
+export { db, orm, schema, enums };
 export default Database;

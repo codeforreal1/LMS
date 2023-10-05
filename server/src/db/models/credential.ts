@@ -1,7 +1,8 @@
+import { randomUUID } from 'crypto';
 import mysql from 'drizzle-orm/mysql-core';
 import orm from 'drizzle-orm';
 
-import { statusColumnEnum } from '../utils';
+import { statusColumnEnum, roleColumnEnum } from '../utils/enums';
 import { generateAlphanumericUUID } from '../../utils/uuid';
 
 export const credential = mysql.mysqlTable('credential', {
@@ -12,8 +13,15 @@ export const credential = mysql.mysqlTable('credential', {
     .notNull()
     .$defaultFn(generateAlphanumericUUID),
 
+  role: mysql.mysqlEnum('role', roleColumnEnum).notNull(),
+
   email: mysql.varchar('email', { length: 255 }),
+
   password: mysql.varchar('password', { length: 255 }),
+
+  sessionKey: mysql
+    .varchar('session_key', { length: 255 })
+    .$defaultFn(randomUUID),
 
   createdAt: mysql
     .datetime('created_at')

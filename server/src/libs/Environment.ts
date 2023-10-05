@@ -9,6 +9,8 @@ class Environment {
   static isDebugMode = process.env.DEBUG?.toUpperCase?.() === 'TRUE';
   static isLoggingDisabled =
     process.env.DISABLE_LOGGER?.toUpperCase?.() === 'TRUE';
+
+  static isHTTPS = process.env.IS_HTTPS?.toUpperCase?.() === 'TRUE';
 }
 
 export default Environment;

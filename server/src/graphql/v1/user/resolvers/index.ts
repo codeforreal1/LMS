@@ -1,12 +1,9 @@
-const user = {
-  Query: {
-    getUser() {
-      return {
-        success: false,
-        message: 'Hello World',
-      };
-    },
-  },
+import type { Resolvers } from '../types';
+
+import * as queries from './queries';
+
+const user: Resolvers = {
+  Query: queries,
 };
 
 export default user;

@@ -1,6 +1,6 @@
 import type { Resolvers } from '../types';
 
-import mutations from './mutations';
+import * as mutations from './mutations';
 
 const authentication: Resolvers = {
   Mutation: mutations,

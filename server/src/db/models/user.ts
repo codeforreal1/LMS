@@ -1,7 +1,7 @@
 import mysql from 'drizzle-orm/mysql-core';
 import orm from 'drizzle-orm';
 
-import { statusColumnEnum } from '../utils';
+import { statusColumnEnum } from '../utils/enums';
 import { generateAlphanumericUUID } from '../../utils/uuid';
 import { credential } from './credential';
 

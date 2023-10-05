@@ -1,8 +1,8 @@
-import morgan from 'morgan';
 import type { ZodSchema } from 'zod';
-import { Request } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import util from 'util';
 
+import type { VerifyAccessTokenDirectiveV1 } from '../graphql/v1/index/directives/verifyAccessToken';
 import Logger from './Logger';
 import Environment from './Environment';
 import errorCodes from '../static/error-codes';
@@ -22,7 +22,7 @@ function findPath(id: number): string {
 }
 
 interface DefaultOptions {
-  formatError: {
+  catchError: {
     meta: Record<string, unknown>;
   };
 }
@@ -40,19 +40,76 @@ interface GraphqlResponse {
 }
 
 const defaultOptions: DefaultOptions = {
-  formatError: {
+  catchError: {
     meta: {},
   },
 };
 
-class GraphqlLib {
+export interface GraphqlContextV1 {
+  req: Request;
+  res: Response;
+  directives?: {
+    verifyAccessToken?: VerifyAccessTokenDirectiveV1;
+  };
+}
+
+class Graphql {
+  version?: number;
+
   static availableVersions = AVAILABLE_VERSIONS;
 
-  static graphqlPathV1 = findPath(1);
+  constructor(version?: number) {
+    if (!(version == null)) {
+      this.version = version;
+    }
+  }
+
+  getPath() {
+    if (this.version == null) {
+      throw new Error('version must be supplied to get the graphql path.');
+    }
+    return findPath(this.version);
+  }
+
+  async setContext({ req, res }: { req: Request; res: Response }) {
+    return {
+      req,
+      res,
+    };
+  }
+
+  withLogMiddleware(version?: number) {
+    return function (req: Request, _: Response, next: NextFunction) {
+      if (Environment.isDebugMode) {
+        const disallowedLogs = ['IntrospectionQuery'];
+
+        if (
+          req.method === 'POST' &&
+          Graphql.availableVersions
+            .map((version) => version?.path)
+            .includes(req.originalUrl)
+        ) {
+          const { query, variables, operationName } = req.body;
+          !disallowedLogs.includes(operationName) &&
+            console.log(
+              [
+                '\n',
+                `Graphql${version ? `@v${version}` : ''}`,
+                `Operation Name: ${operationName}`,
+                `Operation: ${query}`,
+                `Variables: ${JSON.stringify(variables)}`,
+                '\n',
+              ].join('\n'),
+            );
+        }
+        next();
+      }
+    };
+  }
 
   static validateInput<T>(
-    validationSchema: ZodSchema,
     inputs: T,
+    validationSchema: ZodSchema,
   ): [true, T] | [false, GraphqlResponse] {
     const validation = validationSchema.safeParse(inputs);
     if (!validation.success) {
@@ -73,32 +130,8 @@ class GraphqlLib {
     return [true, inputs];
   }
 
-  graphqlLoggerMiddleware() {
-    if (Environment.isDebugMode) {
-      morgan.token('graphql-query', (req: Request) => {
-        const disallowedLogs = ['IntrospectionQuery'];
-
-        if (
-          req.method === 'POST' &&
-          GraphqlLib.availableVersions
-            .map((version) => version?.path)
-            .includes(req.originalUrl)
-        ) {
-          const { query, variables, operationName } = req.body;
-          return !disallowedLogs.includes(operationName)
-            ? `GRAPHQL: \nOperation Name: ${operationName} \nQuery: ${query} \nVariables: ${JSON.stringify(
-                variables,
-              )}`
-            : '';
-        }
-        return '';
-      });
-      return morgan(':graphql-query');
-    }
-  }
-
-  static formatError(error: unknown, options?: DefaultOptions['formatError']) {
-    options = { ...defaultOptions.formatError, ...options };
+  static catchError(error: unknown, options?: DefaultOptions['catchError']) {
+    options = { ...defaultOptions.catchError, ...options };
 
     if (Environment.isDebugMode) {
       util.inspect.defaultOptions.showHidden = true;
@@ -120,4 +153,4 @@ class GraphqlLib {
   }
 }
 
-export default GraphqlLib;
+export default Graphql;

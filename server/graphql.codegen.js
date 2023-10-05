@@ -1,9 +1,14 @@
 /** @type {import("@graphql-codegen/cli").CodegenConfig} */
+
 const config = {
   overwrite: true,
   generates: {
     './src/graphql/v1': {
       schema: './src/graphql/v1/**/typeDefs/index.ts',
+      config: {
+        // This context type path needs to be relative to the actual generated base types.ts file path(presetConfig.baseTypesPath).
+        contextType: '../../libs/Graphql#GraphqlContextV1',
+      },
       preset: 'graphql-modules',
       presetConfig: {
         baseTypesPath: 'types.ts',

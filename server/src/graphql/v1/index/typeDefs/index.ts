@@ -1,6 +1,8 @@
 import { gql } from 'graphql-tag';
 
 export default gql`
+  directive @verifyAccessToken on FIELD_DEFINITION
+
   type Query {
     _query_: ID
   }

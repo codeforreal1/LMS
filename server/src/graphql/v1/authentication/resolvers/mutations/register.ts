@@ -2,19 +2,20 @@ import { z } from 'zod';
 
 import type { MutationResolvers } from '../../types';
 import GraphqlLib from '../../../../../libs/Graphql';
-import { db, orm, schema } from '../../../../../db/libs/Database';
+import { db, orm, schema, enums } from '../../../../../db/libs/Database';
 import PasswordLib from '../../../../../libs/Password';
 import errorCodes from '../../../../../static/error-codes';
-
-type RegisterMutations = MutationResolvers['register'];
 
 const registerSchema = z.object({
   email: z.string().email('Email must be a valid one.'),
   password: z.string().min(6, 'Password must be at least 6 characters long.'),
 });
 
-const register: RegisterMutations = async function (_, inputs) {
-  const [isValid, response] = GraphqlLib.validateInput(registerSchema, inputs);
+export const register: MutationResolvers['register'] = async function (
+  _,
+  inputs,
+) {
+  const [isValid, response] = GraphqlLib.validateInput(inputs, registerSchema);
 
   if (!isValid) {
     return response;
@@ -40,6 +41,7 @@ const register: RegisterMutations = async function (_, inputs) {
       const credential = await tx.insert(schema.credential).values({
         email,
         password: hashedPassword,
+        role: enums.role.USER,
       });
 
       const user = await tx.insert(schema.user).values({
@@ -55,8 +57,6 @@ const register: RegisterMutations = async function (_, inputs) {
       message: 'Account created successfully.',
     };
   } catch (error) {
-    return GraphqlLib.formatError(error);
+    return GraphqlLib.catchError(error);
   }
 };
-
-export default register;

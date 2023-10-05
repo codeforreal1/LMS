@@ -3,6 +3,7 @@
 /* THIS IS AN AUTO GENERATED FILE - DO NOT MODIFY */
 
 import { GraphQLResolveInfo } from 'graphql';
+import { GraphqlContextV1 } from '../../libs/Graphql';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -33,10 +34,35 @@ export type ErrorResponse = {
   path?: Maybe<Scalars['String']['output']>;
 };
 
+export type GetUserResponse = Response & {
+  __typename?: 'GetUserResponse';
+  code?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<User>;
+  errors?: Maybe<Array<ErrorResponse>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
+export type LoginResponse = Response & {
+  __typename?: 'LoginResponse';
+  code?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<User>;
+  errors?: Maybe<Array<ErrorResponse>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _mutation_?: Maybe<Scalars['ID']['output']>;
+  login: LoginResponse;
   register: MutationResponse;
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 
@@ -53,10 +79,25 @@ export type MutationResponse = Response & {
   success: Scalars['Boolean']['output'];
 };
 
+export type MyProfileResponse = Response & {
+  __typename?: 'MyProfileResponse';
+  code?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<User>;
+  errors?: Maybe<Array<ErrorResponse>>;
+  message?: Maybe<Scalars['String']['output']>;
+  success: Scalars['Boolean']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   _query_?: Maybe<Scalars['ID']['output']>;
-  getUser?: Maybe<Scalars['String']['output']>;
+  getUser?: Maybe<GetUserResponse>;
+  myProfile?: Maybe<MyProfileResponse>;
+};
+
+
+export type QueryGetUserArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type Response = {
@@ -145,7 +186,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
-  Response: ( MutationResponse );
+  Response: ( GetUserResponse ) | ( LoginResponse ) | ( MutationResponse ) | ( MyProfileResponse );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -153,10 +194,13 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Credential: ResolverTypeWrapper<Credential>;
   ErrorResponse: ResolverTypeWrapper<ErrorResponse>;
+  GetUserResponse: ResolverTypeWrapper<GetUserResponse>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  LoginResponse: ResolverTypeWrapper<LoginResponse>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationResponse: ResolverTypeWrapper<MutationResponse>;
+  MyProfileResponse: ResolverTypeWrapper<MyProfileResponse>;
   Query: ResolverTypeWrapper<{}>;
   Response: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Response']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
@@ -168,35 +212,61 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']['output'];
   Credential: Credential;
   ErrorResponse: ErrorResponse;
+  GetUserResponse: GetUserResponse;
   ID: Scalars['ID']['output'];
   Int: Scalars['Int']['output'];
+  LoginResponse: LoginResponse;
   Mutation: {};
   MutationResponse: MutationResponse;
+  MyProfileResponse: MyProfileResponse;
   Query: {};
   Response: ResolversInterfaceTypes<ResolversParentTypes>['Response'];
   String: Scalars['String']['output'];
   User: User;
 };
 
-export type CredentialResolvers<ContextType = any, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
+export type VerifyAccessTokenDirectiveArgs = { };
+
+export type VerifyAccessTokenDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = VerifyAccessTokenDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type CredentialResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ErrorResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['ErrorResponse'] = ResolversParentTypes['ErrorResponse']> = {
+export type ErrorResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['ErrorResponse'] = ResolversParentTypes['ErrorResponse']> = {
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   path?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+export type GetUserResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['GetUserResponse'] = ResolversParentTypes['GetUserResponse']> = {
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  data?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  errors?: Resolver<Maybe<Array<ResolversTypes['ErrorResponse']>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LoginResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['LoginResponse'] = ResolversParentTypes['LoginResponse']> = {
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  data?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  errors?: Resolver<Maybe<Array<ResolversTypes['ErrorResponse']>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   _mutation_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   register?: Resolver<ResolversTypes['MutationResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
 };
 
-export type MutationResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['MutationResponse'] = ResolversParentTypes['MutationResponse']> = {
+export type MutationResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['MutationResponse'] = ResolversParentTypes['MutationResponse']> = {
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   errors?: Resolver<Maybe<Array<ResolversTypes['ErrorResponse']>>, ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -204,20 +274,30 @@ export type MutationResponseResolvers<ContextType = any, ParentType extends Reso
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  _query_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  getUser?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type MyProfileResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['MyProfileResponse'] = ResolversParentTypes['MyProfileResponse']> = {
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  data?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  errors?: Resolver<Maybe<Array<ResolversTypes['ErrorResponse']>>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {
-  __resolveType: TypeResolveFn<'MutationResponse', ParentType, ContextType>;
+export type QueryResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  _query_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  getUser?: Resolver<Maybe<ResolversTypes['GetUserResponse']>, ParentType, ContextType, RequireFields<QueryGetUserArgs, 'id'>>;
+  myProfile?: Resolver<Maybe<ResolversTypes['MyProfileResponse']>, ParentType, ContextType>;
+};
+
+export type ResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {
+  __resolveType: TypeResolveFn<'GetUserResponse' | 'LoginResponse' | 'MutationResponse' | 'MyProfileResponse', ParentType, ContextType>;
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   errors?: Resolver<Maybe<Array<ResolversTypes['ErrorResponse']>>, ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
 };
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+export type UserResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   credential?: Resolver<Maybe<ResolversTypes['Credential']>, ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -226,13 +306,19 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = GraphqlContextV1> = {
   Credential?: CredentialResolvers<ContextType>;
   ErrorResponse?: ErrorResponseResolvers<ContextType>;
+  GetUserResponse?: GetUserResponseResolvers<ContextType>;
+  LoginResponse?: LoginResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   MutationResponse?: MutationResponseResolvers<ContextType>;
+  MyProfileResponse?: MyProfileResponseResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Response?: ResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 
+export type DirectiveResolvers<ContextType = GraphqlContextV1> = {
+  verifyAccessToken?: VerifyAccessTokenDirectiveResolver<any, any, ContextType>;
+};

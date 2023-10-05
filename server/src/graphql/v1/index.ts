@@ -1,3 +1,5 @@
+import { makeExecutableSchema } from '@graphql-tools/schema';
+
 import globalTypeDefs from './index/typeDefs';
 import globalResolvers from './index/resolvers';
 
@@ -10,7 +12,9 @@ import credentialResolvers from './credential/resolvers';
 import userTypeDefs from './user/typeDefs';
 import userResolvers from './user/resolvers';
 
-export default {
+import verifyAccessTokenDirective from './index/directives/verifyAccessToken';
+
+let schemaV1 = makeExecutableSchema({
   typeDefs: [
     globalTypeDefs,
     authenticationTypeDefs,
@@ -23,4 +27,11 @@ export default {
     credentialResolvers,
     userResolvers,
   ],
-};
+});
+
+schemaV1 = verifyAccessTokenDirective.apply(
+  schemaV1,
+  verifyAccessTokenDirective.name,
+);
+
+export default schemaV1;

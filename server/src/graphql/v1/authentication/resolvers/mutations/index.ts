@@ -1,3 +1,2 @@
-import register from './register';
-
-export default { register };
+export * from './register';
+export * from './login';

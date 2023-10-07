@@ -19,6 +19,8 @@ export const credential = mysql.mysqlTable('credential', {
 
   password: mysql.varchar('password', { length: 255 }),
 
+  stripeId: mysql.varchar('stripe_id', { length: 255 }),
+
   sessionKey: mysql
     .varchar('session_key', { length: 255 })
     .$defaultFn(randomUUID),

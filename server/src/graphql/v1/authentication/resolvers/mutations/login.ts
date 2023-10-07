@@ -1,10 +1,11 @@
 import { z } from 'zod';
 
 import type { MutationResolvers } from '../../types';
-import GraphqlLib from '../../../../../libs/Graphql';
+import ValidationLib from '../../../../../libs/Validation';
 import PasswordLib from '../../../../../libs/Password';
 import CookieLib from '../../../../../libs/Cookie';
 import JWTLib from '../../../../../libs/JWT';
+import ErrorsLib from '../../../../../libs/Errors';
 import { db, orm, schema } from '../../../../../db/libs/Database';
 import errorCodes from '../../../../../static/error-codes';
 import keys from '../../../../../static/keys';
@@ -19,7 +20,7 @@ export const login: MutationResolvers['login'] = async function (
   inputs,
   context,
 ) {
-  const [isValid, response] = GraphqlLib.validateInput(inputs, loginSchema);
+  const [isValid, response] = ValidationLib.validateSchema(inputs, loginSchema);
 
   if (!isValid) {
     return response;
@@ -77,7 +78,7 @@ export const login: MutationResolvers['login'] = async function (
     context.res.cookie(
       keys.ACCESS_TOKEN,
       accessToken,
-      CookieLib.constructResponseArgs({
+      CookieLib.constructCookieOptions({
         httpOnly: true,
         maxAge: JWTLib.accessTokenExpiresIn,
       }),
@@ -87,7 +88,7 @@ export const login: MutationResolvers['login'] = async function (
     context.res.cookie(
       keys.SESSION_KEY,
       user.credential.sessionKey,
-      CookieLib.constructResponseArgs({
+      CookieLib.constructCookieOptions({
         httpOnly: false,
         maxAge: JWTLib.accessTokenExpiresIn,
       }),
@@ -99,6 +100,6 @@ export const login: MutationResolvers['login'] = async function (
       data: user.user,
     };
   } catch (error) {
-    return GraphqlLib.catchError(error);
+    return ErrorsLib.catchException(error);
   }
 };

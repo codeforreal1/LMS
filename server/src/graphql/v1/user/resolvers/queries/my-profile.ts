@@ -1,5 +1,5 @@
 import type { QueryResolvers } from '../../types';
-import GraphqlLib from '../../../../../libs/Graphql';
+import ErrorsLib from '../../../../../libs/Errors';
 import { db, orm, schema } from '../../../../../db/libs/Database';
 import errorCodes from '../../../../../static/error-codes';
 
@@ -8,7 +8,7 @@ export const myProfile: QueryResolvers['myProfile'] = async function (
   _2,
   { directives },
 ) {
-  const { user } = directives?.verifyAccessToken ?? {};
+  const { user } = directives?.withAccessTokenVerification ?? {};
 
   console.log(user);
 
@@ -41,6 +41,6 @@ export const myProfile: QueryResolvers['myProfile'] = async function (
       },
     };
   } catch (error) {
-    return GraphqlLib.catchError(error);
+    return ErrorsLib.catchException(error);
   }
 };

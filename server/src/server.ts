@@ -10,6 +10,7 @@ import graphqlSchemaV1 from './graphql/v1';
 import type { GraphqlContextV1 } from './libs/Graphql';
 import GraphqlLib from './libs/Graphql';
 import Environment from './libs/Environment';
+import routes from './routes';
 
 const app = express();
 const graphqlLibV1 = new GraphqlLib(1);
@@ -35,6 +36,8 @@ if (Environment.isNotProduction) {
     next();
   });
 }
+
+routes(app);
 
 const PORT = process.env.PORT;
 

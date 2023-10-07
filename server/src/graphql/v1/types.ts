@@ -225,9 +225,9 @@ export type ResolversParentTypes = {
   User: User;
 };
 
-export type VerifyAccessTokenDirectiveArgs = { };
+export type WithAccessTokenVerificationDirectiveArgs = { };
 
-export type VerifyAccessTokenDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = VerifyAccessTokenDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type WithAccessTokenVerificationDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithAccessTokenVerificationDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CredentialResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -320,5 +320,5 @@ export type Resolvers<ContextType = GraphqlContextV1> = {
 };
 
 export type DirectiveResolvers<ContextType = GraphqlContextV1> = {
-  verifyAccessToken?: VerifyAccessTokenDirectiveResolver<any, any, ContextType>;
+  withAccessTokenVerification?: WithAccessTokenVerificationDirectiveResolver<any, any, ContextType>;
 };

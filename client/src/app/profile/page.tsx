@@ -1,22 +1,22 @@
 import React from 'react'
 
 import apolloClient from '.././../apollo'
-import { GET_USER } from '@/apollo/queries/user'
+import { MY_PROFILE } from '@/apollo/queries/user'
 
 import Navbar from '@/ui/Navbar'
+import Upgrade from './Upgrade'
 
 async function Profile(...args: any[]) {
   try {
     const { data } = await apolloClient.query({
-      query: GET_USER,
-      variables: {
-        id: 1,
-      },
+      query: MY_PROFILE,
     })
 
-    const user = data?.getUser?.data
+    const user = data?.myProfile?.data
 
-    return <pre>{!(user == null) ? JSON.stringify(data, null, 2) : null}</pre>
+    return (
+      <pre>{!(user == null) ? JSON.stringify(data ?? {}, null, 2) : null}</pre>
+    )
   } catch (error) {
     console.log('---', error)
     return <p>Oops...</p>
@@ -28,6 +28,7 @@ export default function Test() {
     <div>
       <Navbar />
       <Profile />
+      <Upgrade />
     </div>
   )
 }
@@ -43,9 +44,9 @@ export default function Test() {
 // function Profile() {
 //   const { data } = useQuery(MY_PROFILE)
 
-//   const user = data?.getUser?.data
+//   const user = data?.myProfile?.data
 
-//   return !(user == null) ? <code>{JSON.stringify(user, null, 2)}</code> : null
+//   return !(user == null) ? <pre>{JSON.stringify(user, null, 2)}</pre> : null
 // }
 
 // export default withApolloProvider(Profile)

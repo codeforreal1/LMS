@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 import type { QueryResolvers } from '../../types';
-import GraphqlLib from '../../../../../libs/Graphql';
+import ErrorsLib from '../../../../../libs/Errors';
+import ValidationLib from '../../../../../libs/Validation';
 import { db, orm, schema } from '../../../../../db/libs/Database';
 import errorCodes from '../../../../../static/error-codes';
 
@@ -14,7 +15,10 @@ const getUserSchema = z.object({
 });
 
 export const getUser: QueryResolvers['getUser'] = async function (_, inputs) {
-  const [isValid, response] = GraphqlLib.validateInput(inputs, getUserSchema);
+  const [isValid, response] = ValidationLib.validateSchema(
+    inputs,
+    getUserSchema,
+  );
 
   if (!isValid) {
     return response;
@@ -52,6 +56,6 @@ export const getUser: QueryResolvers['getUser'] = async function (_, inputs) {
       },
     };
   } catch (error) {
-    return GraphqlLib.catchError(error);
+    return ErrorsLib.catchException(error);
   }
 };

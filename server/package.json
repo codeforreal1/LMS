@@ -28,7 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.6.1",
     "nanoid": "3.3.4",
-    "remove": "^0.1.5",
+    "stripe": "^13.9.0",
     "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1",
     "zod": "^3.22.2"
@@ -46,6 +46,7 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.8.0",
+    "@types/stripe-v3": "^3.1.30",
     "@typescript-eslint/eslint-plugin": "^6.7.3",
     "@typescript-eslint/parser": "^6.7.3",
     "drizzle-kit": "^0.19.13",

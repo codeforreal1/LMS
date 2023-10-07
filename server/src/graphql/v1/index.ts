@@ -12,7 +12,7 @@ import credentialResolvers from './credential/resolvers';
 import userTypeDefs from './user/typeDefs';
 import userResolvers from './user/resolvers';
 
-import verifyAccessTokenDirective from './index/directives/verifyAccessToken';
+import withAccessTokenVerificationDirective from './index/directives/withAccessTokenVerification';
 
 let schemaV1 = makeExecutableSchema({
   typeDefs: [
@@ -29,9 +29,9 @@ let schemaV1 = makeExecutableSchema({
   ],
 });
 
-schemaV1 = verifyAccessTokenDirective.apply(
+schemaV1 = withAccessTokenVerificationDirective.apply(
   schemaV1,
-  verifyAccessTokenDirective.name,
+  withAccessTokenVerificationDirective.name,
 );
 
 export default schemaV1;

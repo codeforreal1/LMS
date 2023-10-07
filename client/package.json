@@ -20,6 +20,8 @@
     "@nextui-org/navbar": "^2.0.22",
     "@nextui-org/system": "^2.0.10",
     "@nextui-org/theme": "^2.1.9",
+    "@stripe/react-stripe-js": "^2.3.1",
+    "@stripe/stripe-js": "^2.1.7",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",

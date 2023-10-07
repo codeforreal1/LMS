@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 import type { MutationResolvers } from '../../types';
-import GraphqlLib from '../../../../../libs/Graphql';
+import ErrorsLib from '../../../../../libs/Errors';
+import ValidationLib from '../../../../../libs/Validation';
 import { db, orm, schema, enums } from '../../../../../db/libs/Database';
 import PasswordLib from '../../../../../libs/Password';
 import errorCodes from '../../../../../static/error-codes';
@@ -15,7 +16,10 @@ export const register: MutationResolvers['register'] = async function (
   _,
   inputs,
 ) {
-  const [isValid, response] = GraphqlLib.validateInput(inputs, registerSchema);
+  const [isValid, response] = ValidationLib.validateSchema(
+    inputs,
+    registerSchema,
+  );
 
   if (!isValid) {
     return response;
@@ -57,6 +61,6 @@ export const register: MutationResolvers['register'] = async function (
       message: 'Account created successfully.',
     };
   } catch (error) {
-    return GraphqlLib.catchError(error);
+    return ErrorsLib.catchException(error);
   }
 };

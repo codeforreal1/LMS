@@ -2,25 +2,14 @@ import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
 import type { GraphQLSchema } from 'graphql';
 import { defaultFieldResolver, GraphQLError } from 'graphql';
 
-import dbEnums from '../../../../db/utils/enums';
 import type { GraphqlContextV1 } from '../../../../libs/Graphql';
-import JWTLib from '../../../../libs/JWT';
+import type { AccessTokenPayload } from '../../../../libs/Authentication';
+import AuthenticationLib from '../../../../libs/Authentication';
 import errorCodes from '../../../../static/error-codes';
 
-export interface VerifyAccessTokenDirectiveV1 {
-  user: {
-    id: number;
-    uuid: string;
-  };
-  credential: {
-    id: number;
-    uuid: string;
-    role: Partial<keyof (typeof dbEnums)['role']>;
-    session_key: string;
-  };
-}
+export type WithAccessTokenVerificationDirective = AccessTokenPayload;
 
-function verifyAccessToken<T extends GraphQLSchema>(
+function withAccessTokenVerification<T extends GraphQLSchema>(
   schema: T,
   directiveName: string,
 ) {
@@ -40,22 +29,25 @@ function verifyAccessToken<T extends GraphQLSchema>(
           const { req } = context;
 
           try {
-            const accessToken = req.cookies?.ACCESS_TOKEN;
-            if (accessToken == null) {
+            const tokens = AuthenticationLib.findTokensEntries(req);
+            if (tokens.ACCESS_TOKEN == null) {
               throw new Error();
             }
-            const tokenPayload = JWTLib.verifyAccessToken(accessToken);
+            const accessTokenPayload =
+              AuthenticationLib.parseAccessTokenPayload(
+                tokens?.ACCESS_TOKEN ?? '',
+              );
 
-            if (!('user' in tokenPayload && 'credential' in tokenPayload)) {
+            if (accessTokenPayload == null) {
               throw new Error();
             }
 
             context.directives = {
               ...context.directives,
-              verifyAccessToken: tokenPayload,
+              withAccessTokenVerification: accessTokenPayload,
             };
             return resolve(source, args, context, info);
-          } catch (error) {
+          } catch (_) {
             throw new GraphQLError('Authentication error.', {
               extensions: { code: errorCodes.INVALID_TOKEN },
             });
@@ -67,4 +59,7 @@ function verifyAccessToken<T extends GraphQLSchema>(
   });
 }
 
-export default { apply: verifyAccessToken, name: 'verifyAccessToken' };
+export default {
+  apply: withAccessTokenVerification,
+  name: withAccessTokenVerification.name,
+};

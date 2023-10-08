@@ -14,8 +14,7 @@ const stripe = new StripeCore(STRIPE_SECRET_KEY, {
   typescript: true,
 });
 
-const endpointSecret =
-  'whsec_ac0b24fffb629069cbc50857190fc2733fc925e007137467724de4dfbc5a8497';
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
 
 export default function subscription(app: Router) {
   app

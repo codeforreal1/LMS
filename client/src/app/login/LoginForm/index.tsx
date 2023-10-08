@@ -32,7 +32,6 @@ function LoginForm() {
         variables: { email: loginFields.email, password: loginFields.password },
       })
 
-      console.log('LOGIN DATA', data)
       const isSuccess = data?.login?.success
       if (!isSuccess) {
         throw new Error()

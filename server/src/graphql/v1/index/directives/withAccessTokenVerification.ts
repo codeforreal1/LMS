@@ -33,6 +33,7 @@ function withAccessTokenVerification<T extends GraphQLSchema>(
             if (tokens.ACCESS_TOKEN == null) {
               throw new Error();
             }
+
             const accessTokenPayload =
               AuthenticationLib.parseAccessTokenPayload(
                 tokens?.ACCESS_TOKEN ?? '',

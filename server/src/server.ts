@@ -10,7 +10,8 @@ import graphqlSchemaV1 from './graphql/v1';
 import type { GraphqlContextV1 } from './libs/Graphql';
 import GraphqlLib from './libs/Graphql';
 import Environment from './libs/Environment';
-import routes from './routes';
+import routesV1 from './routes/v1';
+import stripeWebhooks from './routes/stripe';
 
 const app = express();
 const graphqlLibV1 = new GraphqlLib(1);
@@ -37,7 +38,8 @@ if (Environment.isNotProduction) {
   });
 }
 
-routes(app);
+routesV1(app);
+stripeWebhooks(app);
 
 const PORT = process.env.PORT;
 

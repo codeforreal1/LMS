@@ -1,8 +1,9 @@
 import type { Request, Router as ExpressRouter } from 'express';
 import { Router } from 'express';
 
-import type { RouteInitiator } from '../index';
 import payment from './payment';
+
+export type RouteInitiator = (_: ExpressRouter) => void;
 
 const router = Router({ mergeParams: true });
 

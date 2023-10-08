@@ -17,7 +17,7 @@ export default function withAccessTokenVerification() {
     next: NextFunction,
   ) {
     try {
-      const req = request as Request & { middlewares?: Middlewares };
+      const req = request as Request;
       const tokens = AuthenticationLib.findTokensEntries(req);
       if (tokens.ACCESS_TOKEN == null) {
         throw new Error();
@@ -30,13 +30,14 @@ export default function withAccessTokenVerification() {
         throw new Error();
       }
 
-      req.middlewares = {
-        ...(req.middlewares ?? {}),
+      res.locals.middlewares = {
+        ...(res.locals.middleware ?? {}),
         withAccessTokenVerification: accessTokenPayload,
       };
 
       return next();
     } catch (error) {
+      console.log('Authentication Error', error);
       res.status(401).json({
         success: false,
         message: 'Authentication error.',

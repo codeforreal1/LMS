@@ -9,7 +9,7 @@ const router = Router({ mergeParams: true });
 const controllers: RouteInitiator[] = [api];
 
 export default function (app: ExpressRouter) {
-  app.use('/payment', router);
+  app.use('/webhooks', router);
 
   for (const controller of controllers) {
     controller(router);

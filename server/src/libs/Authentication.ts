@@ -26,7 +26,6 @@ const accessTokenPayloadSchema = z.object({
   }),
   credential: z.object({
     id: z.number(),
-    uuid: z.string(),
     role: z.enum(roleColumnEnum),
     session_key: z.string(),
   }),

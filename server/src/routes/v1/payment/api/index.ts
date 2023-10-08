@@ -1,7 +1,7 @@
 import type { Router as ExpressRouter } from 'express';
 import { Router } from 'express';
 
-import type { RouteInitiator } from '../../../index';
+import type { RouteInitiator } from '../../index';
 import createPaymentIntent from './create-payment-intent';
 
 const router = Router({ mergeParams: true });

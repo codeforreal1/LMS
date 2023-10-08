@@ -11,7 +11,8 @@
     "codegen": "graphql-codegen --config graphql.codegen.js",
     "db:migration:generate": "drizzle-kit generate:mysql --config ./drizzle.config.js",
     "db:migration:undo": "drizzle-kit drop --config ./drizzle.config.js",
-    "db:migration:push": "ts-node ./src/db/migrations/migrate.ts"
+    "db:migration:push": "ts-node ./src/db/migrations/migrate.ts",
+    "stripe:listen":"stripe listen --forward-to localhost:9000/stripe/webhooks/api/subscription"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",

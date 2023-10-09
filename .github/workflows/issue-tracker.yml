@@ -10,7 +10,7 @@ jobs:
   comment:
     runs-on: ubuntu-20.04
     steps:
-      - name: Add Comment
+      - name: Add Comment Reply
         run: gh api -X POST \
           https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
           -f body='

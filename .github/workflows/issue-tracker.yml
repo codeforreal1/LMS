@@ -1,12 +1,8 @@
 name: Issue Tracker
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  issues:
+    types: [opened]
 
 jobs:
   comment:

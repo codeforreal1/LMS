@@ -1,0 +1,12 @@
+services:
+  codeforreal-lms:
+    build: .
+    ports:
+      - 9000:9000
+      - 9229:9229
+    volumes:
+      - .:/usr/apps/node/codeforreal-lms
+      - /usr/apps/node/codeforreal-lms/node_modules
+      - /usr/apps/node/codeforreal-lms/server/node_modules
+      - /usr/apps/node/codeforreal-lms/client/node_modules
+    command: yarn start:docker

@@ -8,7 +8,7 @@
     "dev": "node-dev --notify=false --clear ./src/server.ts",
     "prebuild": "yarn codegen",
     "build": "./bin/build.sh",
-    "codegen": "graphql-codegen --config graphql.codegen.js",
+    "codegen": "npx graphql-codegen --config graphql.codegen.js",
     "db:migration:generate": "drizzle-kit generate:mysql --config ./drizzle.config.js",
     "db:migration:undo": "drizzle-kit drop --config ./drizzle.config.js",
     "db:migration:push": "ts-node ./src/db/migrations/migrate.ts",

@@ -66,7 +66,7 @@ const apolloServerV1 = new ApolloServer<GraphqlContextV1>({
         `> GraphQL Version ${graphql?.id} running at http://localhost:${PORT}${graphql?.path}`,
       );
   });
-  app.listen(PORT, function () {
+  app.listen(PORT,"0.0.0.0", function () {
     console.log('\x1b[32m%s\x1b[0m', `> Server started at port ${PORT}.`);
   });
 })();

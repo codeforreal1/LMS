@@ -8,13 +8,15 @@ permissions: write-all
 
 jobs:
   comment:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Add Comment Reply
-        run: gh api -X POST \
+        run: |
+          gh api -X POST \
           https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
           -f body='
-          The project is in early stage to accept any issue.'
+          The project is in early stage to accept any issue.
+          '
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORGANIZATION: ${{ github.event.organization.login }}

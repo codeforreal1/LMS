@@ -30,7 +30,7 @@ jobs:
         run: |
           gh api -X PATCH \
           https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER} \
-          -f body = 'This issue is closed.'
+          -f body = 'This issue is closed.' \
           -f state = 'closed'
 
         env:

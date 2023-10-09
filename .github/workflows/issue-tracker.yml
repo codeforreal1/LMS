@@ -14,9 +14,8 @@ jobs:
     steps:
       - name: Add Comment
         run: gh api -X POST \
-          https://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-          -f  body = "The project is in  early stage to accept issues."
-        shell: bash
+          http://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          -f  body = "The project is in early stage to accept any issue."
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           ORGANIZATION: ${{github.event.organization.login}}

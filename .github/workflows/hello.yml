@@ -14,7 +14,7 @@ jobs:
   hello:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkour@v2
+      - uses: actions/checkout@v2
       - name: hello world
         run: echo "hello world"
         shell: bash

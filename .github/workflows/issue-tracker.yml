@@ -4,17 +4,20 @@ on:
   issues:
     types: [opened]
 
+permissions: write-all
+
 jobs:
   comment:
     runs-on: ubuntu-20.04
     steps:
       - name: Add Comment
         run: gh api -X POST \
-          https://api.github.com/repo/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
-          -d 'The project is in early stage to accept any issue.'
+          https://api.github.com/repos/${ORGANIZATION}/${REPOSITORY}/issues/${ISSUE_NUMBER}/comments \
+          -f body='
+          The project is in early stage to accept any issue.'
         shell: bash
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          ORGANIZATION: ${{github.repository_owner}}
+          ORGANIZATION: ${{github.event.repository.owner.login}}
           REPOSITORY: ${{github.event.repository.name}}
           ISSUE_NUMBER: ${{github.event.issue.number}}

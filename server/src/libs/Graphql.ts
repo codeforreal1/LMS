@@ -20,6 +20,7 @@ export interface GraphqlContextV1 {
   res: Response;
   directives?: {
     withAccessTokenVerification?: WithAccessTokenVerificationDirectiveV1;
+    withCacheControl?: unknown; // for now
   };
 }
 

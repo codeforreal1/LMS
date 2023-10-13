@@ -11,8 +11,13 @@ interface DefinedFields {
   Response: 'success' | 'message' | 'errors' | 'code';
 };
 
+interface DefinedEnumValues {
+  CacheControlScope: 'PUBLIC' | 'PRIVATE';
+};
+
 export type Query = Pick<Types.Query, DefinedFields['Query']>;
 export type Mutation = Pick<Types.Mutation, DefinedFields['Mutation']>;
+export type CacheControlScope = DefinedEnumValues['CacheControlScope'];
 export type Response = Pick<Types.Response, DefinedFields['Response']>;
 export type ErrorResponse = Pick<Types.ErrorResponse, DefinedFields['ErrorResponse']>;
 export type MutationResponse = Pick<Types.MutationResponse, DefinedFields['MutationResponse']>;

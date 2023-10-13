@@ -11,6 +11,8 @@ class Environment {
     process.env.DISABLE_LOGGER?.toUpperCase?.() === 'TRUE';
 
   static isHTTPS = process.env.IS_HTTPS?.toUpperCase?.() === 'TRUE';
+
+  static projectName = process.env.PROJECT_NAME;
 }
 
 export default Environment;

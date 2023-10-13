@@ -21,6 +21,10 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CacheControlScope =
+  | 'PRIVATE'
+  | 'PUBLIC';
+
 export type Credential = {
   __typename?: 'Credential';
   email?: Maybe<Scalars['String']['output']>;
@@ -192,6 +196,7 @@ export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
+  CacheControlScope: CacheControlScope;
   Credential: ResolverTypeWrapper<Credential>;
   ErrorResponse: ResolverTypeWrapper<ErrorResponse>;
   GetUserResponse: ResolverTypeWrapper<GetUserResponse>;
@@ -225,9 +230,21 @@ export type ResolversParentTypes = {
   User: User;
 };
 
+export type CacheControlDirectiveArgs = {
+  inheritMaxAge?: Maybe<Scalars['Boolean']['input']>;
+  maxAge?: Maybe<Scalars['Int']['input']>;
+  scope?: Maybe<CacheControlScope>;
+};
+
+export type CacheControlDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type WithAccessTokenVerificationDirectiveArgs = { };
 
 export type WithAccessTokenVerificationDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithAccessTokenVerificationDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type WithCacheControlDirectiveArgs = { };
+
+export type WithCacheControlDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithCacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type CredentialResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -320,5 +337,7 @@ export type Resolvers<ContextType = GraphqlContextV1> = {
 };
 
 export type DirectiveResolvers<ContextType = GraphqlContextV1> = {
+  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
   withAccessTokenVerification?: WithAccessTokenVerificationDirectiveResolver<any, any, ContextType>;
+  withCacheControl?: WithCacheControlDirectiveResolver<any, any, ContextType>;
 };

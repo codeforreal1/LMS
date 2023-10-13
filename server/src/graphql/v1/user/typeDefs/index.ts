@@ -3,7 +3,9 @@ import { gql } from 'graphql-tag';
 export default gql`
   extend type Query {
     myProfile: MyProfileResponse @withAccessTokenVerification
-    getUser(id: ID!): GetUserResponse @withAccessTokenVerification
+    getUser(id: ID!): GetUserResponse
+      @withCacheControl
+      @withAccessTokenVerification
   }
 
   type User {

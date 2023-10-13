@@ -12,12 +12,13 @@
     "db:migration:generate": "drizzle-kit generate:mysql --config ./drizzle.config.js",
     "db:migration:undo": "drizzle-kit drop --config ./drizzle.config.js",
     "db:migration:push": "ts-node ./src/db/migrations/migrate.ts",
-    "stripe:listen":"stripe listen --forward-to localhost:9000/stripe/webhooks/api/subscription"
+    "stripe:listen": "stripe listen --forward-to localhost:9000/stripe/webhooks/api/subscription"
   },
   "dependencies": {
     "@apollo/server": "^4.9.3",
     "@graphql-tools/schema": "^10.0.0",
     "@graphql-tools/utils": "^10.0.6",
+    "@keyv/redis": "^2.8.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -27,6 +28,7 @@
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
     "jsonwebtoken": "^9.0.2",
+    "keyv": "^4.5.4",
     "mysql2": "^3.6.1",
     "nanoid": "3.3.4",
     "stripe": "^13.9.0",

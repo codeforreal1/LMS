@@ -3,15 +3,7 @@ import ErrorsLib from '../../../../../libs/Errors';
 import { db, orm, schema } from '../../../../../db/libs/Database';
 import errorCodes from '../../../../../static/error-codes';
 
-export const myProfile: QueryResolvers['myProfile'] = async function (
-  _,
-  _2,
-  { directives },
-) {
-  const { user } = directives?.withAccessTokenVerification ?? {};
-
-  console.log(user);
-
+export const myProfile: QueryResolvers['myProfile'] = async function () {
   try {
     const [user] = await db
       .select()
@@ -20,9 +12,6 @@ export const myProfile: QueryResolvers['myProfile'] = async function (
         schema.credential,
         orm.eq(schema.user.id, schema.credential.id),
       )
-      // .where((user) =>
-      //   IsUUID ? orm.eq(user.user.uuid, id) : orm.eq(user.user.id, +id),
-      // )
       .limit(1);
 
     if (user == null) {

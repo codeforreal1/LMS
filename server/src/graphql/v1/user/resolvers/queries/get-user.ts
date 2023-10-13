@@ -14,7 +14,11 @@ const getUserSchema = z.object({
   ),
 });
 
-export const getUser: QueryResolvers['getUser'] = async function (_, inputs) {
+export const getUser: QueryResolvers['getUser'] = async function (
+  _,
+  inputs,
+  _2,
+) {
   const [isValid, response] = ValidationLib.validateSchema(
     inputs,
     getUserSchema,

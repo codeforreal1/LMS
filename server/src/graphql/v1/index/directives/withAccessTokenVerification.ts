@@ -61,6 +61,11 @@ function withAccessTokenVerification<T extends GraphQLSchema>(
 }
 
 export default {
-  apply: withAccessTokenVerification,
+  apply: function (schema: GraphQLSchema) {
+    return withAccessTokenVerification(
+      schema,
+      withAccessTokenVerification.name,
+    );
+  },
   name: withAccessTokenVerification.name,
 };

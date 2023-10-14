@@ -4,13 +4,19 @@ export default gql`
   extend type Query {
     myProfile: MyProfileResponse @withAccessTokenVerification
     getUser(id: ID!): GetUserResponse
-      @withCacheControl
+      @withCacheControl(scope: PRIVATE)
+      @withAccessTokenVerification
+  }
+
+  extend type Mutation {
+    updateUser(id: ID!): GetUserResponse
+      @withPurgeCache(scope: PRIVATE)
       @withAccessTokenVerification
   }
 
   type User {
-    id: Int!
-    uuid: String!
+    id: Int
+    uuid: String
     firstName: String
     lastName: String
     credential: Credential

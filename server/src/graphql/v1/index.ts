@@ -1,5 +1,6 @@
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import { ApolloServer } from '@apollo/server';
+import { mapSchema, MapperKind } from '@graphql-tools/utils';
 
 import Environment from '../../libs/Environment';
 import { GraphqlContextV1 } from '../../libs/Graphql';
@@ -18,9 +19,7 @@ import userResolvers from './user/resolvers';
 
 import withAccessTokenVerificationDirective from './index/directives/withAccessTokenVerification';
 import withCacheControlDirective from './index/directives/withCacheControl';
-
-const disableGraphqlCaching =
-  process.env.DISABLE_GRAPHQL_CACHING?.toLocaleLowerCase() === 'true';
+import withPurgeCacheDirective from './index/directives/withPurgeCache';
 
 let schema = makeExecutableSchema({
   typeDefs: [
@@ -37,11 +36,23 @@ let schema = makeExecutableSchema({
   ],
 });
 
-schema = withAccessTokenVerificationDirective.apply(schema);
+// Directives
+schema = mapSchema(schema, {
+  [MapperKind.OBJECT_FIELD]: function (field) {
+    if (!Environment.disableGraphqlCaching) {
+      withCacheControlDirective(field, withCacheControlDirective.name, schema);
+      withPurgeCacheDirective(field, withPurgeCacheDirective.name, schema);
+    }
 
-if (!disableGraphqlCaching) {
-  schema = withCacheControlDirective.apply(schema);
-}
+    withAccessTokenVerificationDirective(
+      field,
+      withAccessTokenVerificationDirective.name,
+      schema,
+    );
+
+    return field;
+  },
+});
 
 const apolloServer = new ApolloServer<GraphqlContextV1>({
   schema: schema,

@@ -13,6 +13,9 @@ class Environment {
   static isHTTPS = process.env.IS_HTTPS?.toUpperCase?.() === 'TRUE';
 
   static projectName = process.env.PROJECT_NAME;
+
+  static disableGraphqlCaching =
+    process.env.DISABLE_GRAPHQL_CACHING?.toUpperCase() === 'TRUE';
 }
 
 export default Environment;

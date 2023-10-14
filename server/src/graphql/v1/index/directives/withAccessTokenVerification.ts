@@ -1,5 +1,5 @@
-import { mapSchema, getDirective, MapperKind } from '@graphql-tools/utils';
-import type { GraphQLSchema } from 'graphql';
+import { getDirective } from '@graphql-tools/utils';
+import type { GraphQLSchema, GraphQLFieldConfig } from 'graphql';
 import { defaultFieldResolver, GraphQLError } from 'graphql';
 
 import type { GraphqlContextV1 } from '../../../../libs/Graphql';
@@ -9,63 +9,46 @@ import errorCodes from '../../../../static/error-codes';
 
 export type WithAccessTokenVerificationDirective = AccessTokenPayload;
 
-function withAccessTokenVerification<T extends GraphQLSchema>(
-  schema: T,
+function withAccessTokenVerification(
+  fieldConfig: GraphQLFieldConfig<unknown, GraphqlContextV1, unknown>,
   directiveName: string,
+  schema: GraphQLSchema,
 ) {
-  return mapSchema(schema, {
-    [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
-      const directive = getDirective(schema, fieldConfig, directiveName)?.[0];
+  const directive = getDirective(schema, fieldConfig, directiveName)?.[0];
 
-      if (directive) {
-        const { resolve = defaultFieldResolver } = fieldConfig;
+  if (directive) {
+    const { resolve = defaultFieldResolver } = fieldConfig;
 
-        fieldConfig.resolve = async function (
-          source,
-          args,
-          context: GraphqlContextV1,
-          info,
-        ) {
-          const { req } = context;
+    fieldConfig.resolve = async function (parent, args, context, info) {
+      const { req } = context;
 
-          try {
-            const tokens = AuthenticationLib.findTokensEntries(req);
-            if (tokens.ACCESS_TOKEN == null) {
-              throw new Error();
-            }
+      try {
+        const tokens = AuthenticationLib.findTokensEntries(req);
+        if (tokens.ACCESS_TOKEN == null) {
+          throw new Error();
+        }
 
-            const accessTokenPayload =
-              AuthenticationLib.parseAccessTokenPayload(
-                tokens?.ACCESS_TOKEN ?? '',
-              );
+        const accessTokenPayload = AuthenticationLib.parseAccessTokenPayload(
+          tokens?.ACCESS_TOKEN ?? '',
+        );
 
-            if (accessTokenPayload == null) {
-              throw new Error();
-            }
+        if (accessTokenPayload == null) {
+          throw new Error();
+        }
 
-            context.directives = {
-              ...context.directives,
-              withAccessTokenVerification: accessTokenPayload,
-            };
-            return resolve(source, args, context, info);
-          } catch (_) {
-            throw new GraphQLError('Authentication error.', {
-              extensions: { code: errorCodes.INVALID_TOKEN },
-            });
-          }
+        context.directives = {
+          ...context.directives,
+          withAccessTokenVerification: accessTokenPayload,
         };
-        return fieldConfig;
+        return resolve(parent, args, context, info);
+      } catch (_) {
+        throw new GraphQLError('Authentication error.', {
+          extensions: { code: errorCodes.INVALID_TOKEN },
+        });
       }
-    },
-  });
+    };
+    return fieldConfig;
+  }
 }
 
-export default {
-  apply: function (schema: GraphQLSchema) {
-    return withAccessTokenVerification(
-      schema,
-      withAccessTokenVerification.name,
-    );
-  },
-  name: withAccessTokenVerification.name,
-};
+export default withAccessTokenVerification;

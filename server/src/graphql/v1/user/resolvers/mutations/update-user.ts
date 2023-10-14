@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-import type { QueryResolvers } from '../../types';
+import type { MutationResolvers } from '../../types';
 import ErrorsLib from '../../../../../libs/Errors';
 import ValidationLib from '../../../../../libs/Validation';
 import { db, orm, schema } from '../../../../../db/libs/Database';
 import errorCodes from '../../../../../static/error-codes';
 
-const getUserSchema = z.object({
+const updateUserSchema = z.object({
   id: z.string().or(
     z.number({
       invalid_type_error: 'id should be either an integer or an uuid',
@@ -14,10 +14,13 @@ const getUserSchema = z.object({
   ),
 });
 
-export const getUser: QueryResolvers['getUser'] = async function (_, inputs) {
+export const updateUser: MutationResolvers['updateUser'] = async function (
+  _,
+  inputs,
+) {
   const [isValid, response] = ValidationLib.validateSchema(
     inputs,
-    getUserSchema,
+    updateUserSchema,
   );
 
   if (!isValid) {
@@ -48,11 +51,14 @@ export const getUser: QueryResolvers['getUser'] = async function (_, inputs) {
       };
     }
 
+    console.log('--Updated');
+
     return {
       success: true,
       data: {
         id: user.user.id,
         uuid: user.user.uuid,
+        firstName: 'Niraj',
       },
     };
   } catch (error) {

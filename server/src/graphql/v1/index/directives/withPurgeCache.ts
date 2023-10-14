@@ -1,17 +1,26 @@
-// import fs from 'fs';
-import crypto from 'crypto';
+import fs from 'fs';
 
 import { getDirective } from '@graphql-tools/utils';
 import type { GraphQLSchema, GraphQLFieldConfig } from 'graphql';
 import { defaultFieldResolver } from 'graphql';
 
 import Keyv from '../../../../libs/Keyv';
-import type { CacheControlScope } from '../types';
 import type { GraphqlContextV1 } from '../../../../libs/Graphql';
+import type { CacheControlScope } from '../types';
+import Redis from '../../../../libs/Redis';
+
+/**
+ * Type can only be a custom object. So figure out a way to determine if the certain type is scalar or custom object
+ * ID, Int, Float, Boolean, String _. Literal Scalar Types
+ * Type cannot be a enum. Enums are scalar as well.
+ * Type cannot be a custom scalar.
+ *
+ */
 
 const keyv = Keyv.getInstance();
+const redis = Redis.getInstance();
 
-function withCacheControl(
+function withPurgeCache(
   fieldConfig: GraphQLFieldConfig<unknown, GraphqlContextV1, unknown>,
   directiveName: string,
   schema: GraphQLSchema,
@@ -28,20 +37,19 @@ function withCacheControl(
         context: GraphqlContextV1,
         info,
       ) {
-        if (info.path.typename !== 'Query') {
+        if (info.path.typename !== 'Mutation') {
           throw new Error(
-            `@${withCacheControl.name} can only be used with 'Query' parent type`,
+            `@${withPurgeCache.name} can only be used with 'Mutation' parent type`,
           );
         }
-
         try {
-          // fs.writeFileSync('./info.json', JSON.stringify(info), 'utf-8');
-
+          fs.writeFileSync('./info.json', JSON.stringify(info), 'utf-8');
           const withAccessTokenVerification =
             context?.directives?.withAccessTokenVerification;
 
           const userSessionKey =
             withAccessTokenVerification?.credential?.session_key;
+
           const scope = (directive['scope'] ?? 'PRIVATE') as CacheControlScope;
 
           if (scope === 'PRIVATE' && userSessionKey == null) {
@@ -50,28 +58,31 @@ function withCacheControl(
 
           const returnType = info?.returnType;
 
-          const hash = crypto
-            .createHash('sha256')
-            .update(JSON.stringify(info))
-            .digest('hex');
-
           const cacheKey = `${returnType}${
             !(userSessionKey == null) ? `|${userSessionKey}` : ''
-          }|${hash}`;
+          }`;
 
-          const cacheValue = await keyv.get(cacheKey);
-          if (!(cacheValue == null)) {
-            console.log('--CACHE HIT---');
-            return JSON.parse(cacheValue);
+          const matchedKeys = await redis.keys(
+            `${keyv.opts.store
+              ._getNamespace()
+              .slice('namespace:'.length)}:${cacheKey}|*`,
+          );
+          console.log(
+            matchedKeys,
+            `${keyv.opts.store
+              ._getNamespace()
+              .slice('namespace:'.length)}:${cacheKey}|*`,
+          );
+          if (matchedKeys?.length === 0) {
+            return resolve(parent, args, context, info);
           }
 
-          const result = await resolve(parent, args, context, info);
-          const maxAge = (directive['maxAge'] ?? 500 * 1000) as number;
-          await keyv.set(cacheKey, JSON.stringify(result), maxAge);
+          console.log('CACHE FOUND', matchedKeys);
+          await redis.del(matchedKeys);
 
-          return result;
-        } catch (_) {
-          console.log('---LOG CACHE ERROR---', _);
+          return resolve(parent, args, context, info);
+        } catch (error) {
+          console.log('---LOG CACHE ERROR---', error);
           return resolve(parent, args, context, info);
         }
       };
@@ -80,4 +91,4 @@ function withCacheControl(
   }
 }
 
-export default withCacheControl;
+export default withPurgeCache;

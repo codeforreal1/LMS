@@ -2,13 +2,11 @@ import { gql } from 'graphql-tag';
 
 export default gql`
   directive @withAccessTokenVerification on FIELD_DEFINITION
-  directive @cacheControl(
+  directive @withCacheControl(
     maxAge: Int
     scope: CacheControlScope
-    inheritMaxAge: Boolean
-  ) on FIELD_DEFINITION | OBJECT
-
-  directive @withCacheControl on FIELD_DEFINITION
+  ) on FIELD_DEFINITION
+  directive @withPurgeCache(scope: CacheControlScope) on FIELD_DEFINITION
 
   type Query {
     _query_: ID

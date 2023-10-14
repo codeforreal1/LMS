@@ -28,8 +28,8 @@ export type CacheControlScope =
 export type Credential = {
   __typename?: 'Credential';
   email?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Int']['output'];
-  uuid: Scalars['String']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
+  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 export type ErrorResponse = {
@@ -61,6 +61,7 @@ export type Mutation = {
   _mutation_?: Maybe<Scalars['ID']['output']>;
   login: LoginResponse;
   register: MutationResponse;
+  updateUser?: Maybe<GetUserResponse>;
 };
 
 
@@ -73,6 +74,11 @@ export type MutationLoginArgs = {
 export type MutationRegisterArgs = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+};
+
+
+export type MutationUpdateUserArgs = {
+  id: Scalars['ID']['input'];
 };
 
 export type MutationResponse = Response & {
@@ -115,9 +121,9 @@ export type User = {
   __typename?: 'User';
   credential?: Maybe<Credential>;
   firstName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Int']['output'];
+  id?: Maybe<Scalars['Int']['output']>;
   lastName?: Maybe<Scalars['String']['output']>;
-  uuid: Scalars['String']['output'];
+  uuid?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -230,26 +236,27 @@ export type ResolversParentTypes = {
   User: User;
 };
 
-export type CacheControlDirectiveArgs = {
-  inheritMaxAge?: Maybe<Scalars['Boolean']['input']>;
-  maxAge?: Maybe<Scalars['Int']['input']>;
-  scope?: Maybe<CacheControlScope>;
-};
-
-export type CacheControlDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = CacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
-
 export type WithAccessTokenVerificationDirectiveArgs = { };
 
 export type WithAccessTokenVerificationDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithAccessTokenVerificationDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
-export type WithCacheControlDirectiveArgs = { };
+export type WithCacheControlDirectiveArgs = {
+  maxAge?: Maybe<Scalars['Int']['input']>;
+  scope?: Maybe<CacheControlScope>;
+};
 
 export type WithCacheControlDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithCacheControlDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type WithPurgeCacheDirectiveArgs = {
+  scope?: Maybe<CacheControlScope>;
+};
+
+export type WithPurgeCacheDirectiveResolver<Result, Parent, ContextType = GraphqlContextV1, Args = WithPurgeCacheDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type CredentialResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['Credential'] = ResolversParentTypes['Credential']> = {
   email?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -281,6 +288,7 @@ export type MutationResolvers<ContextType = GraphqlContextV1, ParentType extends
   _mutation_?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   login?: Resolver<ResolversTypes['LoginResponse'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'email' | 'password'>>;
   register?: Resolver<ResolversTypes['MutationResponse'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'email' | 'password'>>;
+  updateUser?: Resolver<Maybe<ResolversTypes['GetUserResponse']>, ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'id'>>;
 };
 
 export type MutationResponseResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['MutationResponse'] = ResolversParentTypes['MutationResponse']> = {
@@ -317,9 +325,9 @@ export type ResponseResolvers<ContextType = GraphqlContextV1, ParentType extends
 export type UserResolvers<ContextType = GraphqlContextV1, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   credential?: Resolver<Maybe<ResolversTypes['Credential']>, ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -337,7 +345,7 @@ export type Resolvers<ContextType = GraphqlContextV1> = {
 };
 
 export type DirectiveResolvers<ContextType = GraphqlContextV1> = {
-  cacheControl?: CacheControlDirectiveResolver<any, any, ContextType>;
   withAccessTokenVerification?: WithAccessTokenVerificationDirectiveResolver<any, any, ContextType>;
   withCacheControl?: WithCacheControlDirectiveResolver<any, any, ContextType>;
+  withPurgeCache?: WithPurgeCacheDirectiveResolver<any, any, ContextType>;
 };

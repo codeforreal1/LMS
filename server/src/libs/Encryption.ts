@@ -2,7 +2,9 @@ import 'dotenv/config';
 import crypto from 'crypto';
 
 const encryptionAlgorithm = 'aes-256-gcm';
-const encryptionKey = process.env.ENCRYPTION_KEY as string; // Must be 64 character for iv length 12
+
+// Must be 64 character for iv length 16, 32 character for iv length 12
+const encryptionKey = process.env.ENCRYPTION_KEY as string;
 
 const IV_BYTE_LENGTH = 12;
 const IV = crypto.randomBytes(IV_BYTE_LENGTH);

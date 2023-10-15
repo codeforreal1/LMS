@@ -9,9 +9,7 @@ export default gql`
   }
 
   extend type Mutation {
-    updateUser(id: ID!): GetUserResponse
-      @withPurgeCache(scope: PRIVATE)
-      @withAccessTokenVerification
+    updateUser(id: ID!): GetUserResponse @withAccessTokenVerification
   }
 
   type User {

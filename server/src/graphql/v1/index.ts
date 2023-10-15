@@ -19,7 +19,6 @@ import userResolvers from './user/resolvers';
 
 import withAccessTokenVerificationDirective from './index/directives/withAccessTokenVerification';
 import withCacheControlDirective from './index/directives/withCacheControl';
-import withPurgeCacheDirective from './index/directives/withPurgeCache';
 
 let schema = makeExecutableSchema({
   typeDefs: [
@@ -41,7 +40,6 @@ schema = mapSchema(schema, {
   [MapperKind.OBJECT_FIELD]: function (field) {
     if (!Environment.disableGraphqlCaching) {
       withCacheControlDirective(field, withCacheControlDirective.name, schema);
-      withPurgeCacheDirective(field, withPurgeCacheDirective.name, schema);
     }
 
     withAccessTokenVerificationDirective(

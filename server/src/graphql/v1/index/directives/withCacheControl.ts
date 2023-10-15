@@ -1,4 +1,3 @@
-// import fs from 'fs';
 import crypto from 'crypto';
 
 import { getDirective } from '@graphql-tools/utils';
@@ -6,10 +5,13 @@ import type { GraphQLSchema, GraphQLFieldConfig } from 'graphql';
 import { defaultFieldResolver } from 'graphql';
 
 import Keyv from '../../../../libs/Keyv';
-import type { CacheControlScope } from '../types';
+import type { CacheControlScope, Response } from '../types';
 import type { GraphqlContextV1 } from '../../../../libs/Graphql';
 
 const keyv = Keyv.getInstance();
+
+const DEFAULT_MAX_AGE = 15;
+const DEFAULT_SCOPE = 'PUBLIC';
 
 function withCacheControl(
   fieldConfig: GraphQLFieldConfig<unknown, GraphqlContextV1, unknown>,
@@ -35,14 +37,13 @@ function withCacheControl(
         }
 
         try {
-          // fs.writeFileSync('./info.json', JSON.stringify(info), 'utf-8');
-
           const withAccessTokenVerification =
             context?.directives?.withAccessTokenVerification;
 
           const userSessionKey =
             withAccessTokenVerification?.credential?.session_key;
-          const scope = (directive['scope'] ?? 'PRIVATE') as CacheControlScope;
+          const scope = (directive['scope'] ??
+            DEFAULT_SCOPE) as CacheControlScope;
 
           if (scope === 'PRIVATE' && userSessionKey == null) {
             return resolve(parent, args, context, info);
@@ -61,13 +62,21 @@ function withCacheControl(
 
           const cacheValue = await keyv.get(cacheKey);
           if (!(cacheValue == null)) {
-            console.log('--CACHE HIT---');
             return JSON.parse(cacheValue);
           }
 
-          const result = await resolve(parent, args, context, info);
-          const maxAge = (directive['maxAge'] ?? 500 * 1000) as number;
-          await keyv.set(cacheKey, JSON.stringify(result), maxAge);
+          const result = (await resolve(
+            parent,
+            args,
+            context,
+            info,
+          )) as Response;
+
+          if (result?.success) {
+            const maxAge = ((directive['maxAge'] ?? DEFAULT_MAX_AGE) *
+              1000) as number;
+            await keyv.set(cacheKey, JSON.stringify(result), maxAge);
+          }
 
           return result;
         } catch (_) {

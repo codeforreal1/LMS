@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
 
+import million from 'million/compiler'
 import analyzeBundle from '@next/bundle-analyzer'
 
 const withBundleAnalyzer = analyzeBundle({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const config = withBundleAnalyzer({
+const nextConfig = withBundleAnalyzer({
   webpack(config, { webpack }) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -25,4 +26,10 @@ const config = withBundleAnalyzer({
   },
 })
 
-export default config
+const millionConfig = {
+  auto: true,
+  // if you're using RSC:
+  // auto: { rsc: true },
+}
+
+export default million.next(nextConfig, millionConfig)

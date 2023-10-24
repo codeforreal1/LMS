@@ -15,7 +15,7 @@ export const credential = mysql.mysqlTable('credential', {
 
   role: mysql.mysqlEnum('role', roleColumnEnum).notNull(),
 
-  email: mysql.varchar('email', { length: 255 }),
+  email: mysql.varchar('email', { length: 255 }).unique(),
 
   password: mysql.varchar('password', { length: 255 }),
 

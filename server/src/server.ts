@@ -7,8 +7,7 @@ import cookieParser from 'cookie-parser';
 
 import GraphqlLib from './libs/Graphql';
 import Environment from './libs/Environment';
-import routesV1 from './routes/v1';
-import stripeWebhooks from './routes/stripe';
+import routes from './routes';
 import apolloServerV1 from './graphql/v1';
 
 const app = express();
@@ -36,8 +35,7 @@ if (Environment.isNotProduction) {
   });
 }
 
-routesV1(app);
-stripeWebhooks(app);
+routes(app);
 
 const PORT = process.env.PORT;
 

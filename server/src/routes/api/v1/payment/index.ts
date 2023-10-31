@@ -2,11 +2,11 @@ import type { Router as ExpressRouter } from 'express';
 import { Router } from 'express';
 
 import type { RouteInitiator } from '../index';
-import api from './api';
+import createPaymentIntent from './create-payment-intent';
 
 const router = Router({ mergeParams: true });
 
-const controllers: RouteInitiator[] = [api];
+const controllers: RouteInitiator[] = [createPaymentIntent];
 
 export default function (app: ExpressRouter) {
   app.use('/payment', router);

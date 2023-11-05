@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 
 import AuthenticationLib from '../libs/Authentication';
-import errorCodes from '../static/error-codes';
+import errorCodes from '../constants/error-codes';
 import type { Middlewares } from '.';
 
 export default function withAccessTokenVerification() {

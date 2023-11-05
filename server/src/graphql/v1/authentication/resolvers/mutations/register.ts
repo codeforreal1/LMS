@@ -5,7 +5,7 @@ import ErrorsLib from '../../../../../libs/Errors';
 import ValidationLib from '../../../../../libs/Validation';
 import { db, orm, schema, enums } from '../../../../../db/libs/Database';
 import PasswordLib from '../../../../../libs/Password';
-import errorCodes from '../../../../../static/error-codes';
+import errorCodes from '../../../../../constants/error-codes';
 
 const registerSchema = z.object({
   email: z.string().email('Email must be a valid one.'),

@@ -2,7 +2,7 @@ import util from 'util';
 
 import Logger from './Logger';
 import Environment from './Environment';
-import errorCodes from '../static/error-codes';
+import errorCodes from '../constants/error-codes';
 
 const logger = new Logger(__filename);
 

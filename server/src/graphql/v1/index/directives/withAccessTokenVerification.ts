@@ -5,7 +5,7 @@ import { defaultFieldResolver, GraphQLError } from 'graphql';
 import type { GraphqlContextV1 } from '../../../../libs/Graphql';
 import type { AccessTokenPayload } from '../../../../libs/Authentication';
 import AuthenticationLib from '../../../../libs/Authentication';
-import errorCodes from '../../../../static/error-codes';
+import errorCodes from '../../../../constants/error-codes';
 
 export type WithAccessTokenVerificationDirective = AccessTokenPayload;
 

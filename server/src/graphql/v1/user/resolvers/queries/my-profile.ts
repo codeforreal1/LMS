@@ -1,7 +1,7 @@
 import type { QueryResolvers } from '../../types';
 import ErrorsLib from '../../../../../libs/Errors';
 import { db, orm, schema } from '../../../../../db/libs/Database';
-import errorCodes from '../../../../../static/error-codes';
+import errorCodes from '../../../../../constants/error-codes';
 
 export const myProfile: QueryResolvers['myProfile'] = async function () {
   try {

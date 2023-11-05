@@ -4,7 +4,7 @@ import type { GetUserResponseResolvers } from '../../types';
 // import ErrorsLib from '../../../../../libs/Errors';
 // import ValidationLib from '../../../../../libs/Validation';
 // import { db, orm, schema } from '../../../../../db/libs/Database';
-// import errorCodes from '../../../../../static/error-codes';
+// import errorCodes from '../../../../../constants/error-codes';
 
 export const GetUserResponse: GetUserResponseResolvers = {
   data: function (parent) {

@@ -7,8 +7,8 @@ import CookieLib from '../../../../../libs/Cookie';
 import JWTLib from '../../../../../libs/JWT';
 import ErrorsLib from '../../../../../libs/Errors';
 import { db, orm, schema } from '../../../../../db/libs/Database';
-import errorCodes from '../../../../../static/error-codes';
-import keys from '../../../../../static/keys';
+import errorCodes from '../../../../../constants/error-codes';
+import keys from '../../../../../constants/keys';
 
 const loginSchema = z.object({
   email: z.string().email(),

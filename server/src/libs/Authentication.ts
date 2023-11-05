@@ -4,7 +4,7 @@ import { z } from 'zod';
 import EncryptionLib from './Encryption';
 import JWTLib from './JWT';
 import { roleColumnEnum } from '../db/utils/enums';
-import keys from '../static/keys';
+import keys from '../constants/keys';
 
 type TokenUnion = Extract<
   keyof typeof keys,

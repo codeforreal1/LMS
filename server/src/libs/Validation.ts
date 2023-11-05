@@ -1,6 +1,6 @@
 import type { ZodSchema } from 'zod';
 
-import errorCodes from '../static/error-codes';
+import errorCodes from '../constants/error-codes';
 
 interface ValidationErrorResponse {
   success: boolean;

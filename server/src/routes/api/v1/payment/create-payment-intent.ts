@@ -6,7 +6,7 @@ import ErrorsLib from '../../../../libs/Errors';
 import { db, orm, schema } from '../../../../db/libs/Database';
 import StripeService from '../../../../services/Stripe';
 import { withAccessTokenVerification } from '../../../../middlewares';
-import errorCodes from '../../../../static/error-codes';
+import errorCodes from '../../../../constants/error-codes';
 
 const stripeService = new StripeService();
 
